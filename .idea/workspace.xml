@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="138a99cc-f118-4129-9b54-2be542a678b6" name="Changes" comment="feat: add base structure" />
+    <list default="true" id="138a99cc-f118-4129-9b54-2be542a678b6" name="Changes" comment="feat: add base structure">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/014740b6-488c-4c31-8b79-237d9eb53c24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estaciones/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/estaciones/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +19,7 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/alquileres" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -44,7 +49,7 @@
     "code.cleanup.on.save": "true",
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "openjdk-21",
-    "last_opened_file_path": "/home/franmerlini/Desktop/ba-tpi/bicicletas/estaciones/src/main/java/com/grupo95/estaciones",
+    "last_opened_file_path": "C:/Users/valen/Desktop/react/facu/backend/utn-frc-ba-tpi-2023/estaciones",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -102,6 +107,7 @@
       <workItem from="1697593735059" duration="2975000" />
       <workItem from="1697599136580" duration="2566000" />
       <workItem from="1697603790576" duration="149000" />
+      <workItem from="1697631815763" duration="626000" />
     </task>
     <task id="LOCAL-00001" summary="feat: add base structure">
       <option name="closed" value="true" />
