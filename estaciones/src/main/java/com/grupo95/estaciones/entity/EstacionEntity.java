@@ -2,7 +2,7 @@ package com.grupo95.estaciones.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +17,7 @@ public class EstacionEntity {
     private String nombre;
     @Basic
     @Column(name = "FECHA_HORA_CREACION")
-    private Date fechaHoraCreacion;
+    private LocalDateTime fechaHoraCreacion;
     @Basic
     @Column(name = "LATITUD")
     private Float latitud;
@@ -41,11 +41,11 @@ public class EstacionEntity {
         this.nombre = nombre;
     }
 
-    public Date getFechaHoraCreacion() {
+    public LocalDateTime getFechaHoraCreacion() {
         return fechaHoraCreacion;
     }
 
-    public void setFechaHoraCreacion(Date fechaHoraCreacion) {
+    public void setFechaHoraCreacion(LocalDateTime fechaHoraCreacion) {
         this.fechaHoraCreacion = fechaHoraCreacion;
     }
 

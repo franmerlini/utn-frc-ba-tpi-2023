@@ -19,4 +19,9 @@ public class EstacionService {
     public List<EstacionEntity> obtenerEstaciones() {
         return estacionRepository.findAll();
     }
+
+    public void agregarEstacion(EstacionEntity estacion) {
+        System.out.println(estacion);
+        estacionRepository.insertarEstacion(estacion.getFechaHoraCreacion(), estacion.getLatitud(), estacion.getLongitud(), estacion.getNombre());
+    }
 }
