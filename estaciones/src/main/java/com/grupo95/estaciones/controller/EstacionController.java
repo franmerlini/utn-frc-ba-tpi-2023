@@ -3,11 +3,9 @@ package com.grupo95.estaciones.controller;
 import com.grupo95.estaciones.entity.EstacionEntity;
 import com.grupo95.estaciones.service.EstacionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,6 +19,7 @@ public class EstacionController {
     }
 
     @GetMapping("/estaciones")
+    @ResponseStatus(HttpStatus.OK)
     public List<EstacionEntity> obtenerEstaciones() {
         return estacionService.obtenerEstaciones();
     }
