@@ -3,37 +3,31 @@ package com.grupo95.alquileres.controller;
 import com.grupo95.alquileres.entity.AlquilerEntity;
 import com.grupo95.alquileres.service.AlquilerService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/alquileres")
+@RequiredArgsConstructor
 public class AlquilerController {
     private final AlquilerService alquilerservice;
 
-    @Autowired
-    public AlquilerController(AlquilerService alquilerservice) {
-        this.alquilerservice = alquilerservice;
-    }
-
-    @GetMapping("/alquiler")
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
     public List<AlquilerEntity> obtenerAlquileres() {
-        System.out.println("AlquilerController.obtenerAlquileres()");
         return alquilerservice.obtenerAlquileres();
     }
 
-    @PostMapping("/alquiler")
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(
             summary = "LA DE TU MAMA",
             description = "LA DE TU ABUELA"
     )
-    public String agregarAlquiler(@RequestBody AlquilerEntity alquiler) {
-        System.out.println("AlquilerController.agregarAlquiler()");
+    public void agregarAlquiler(@RequestBody AlquilerEntity alquiler) {
         alquilerservice.agregarAlquiler(alquiler);
-        return "";
     }
 }

@@ -2,33 +2,28 @@ package com.grupo95.estaciones.controller;
 
 import com.grupo95.estaciones.entity.EstacionEntity;
 import com.grupo95.estaciones.service.EstacionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/estaciones")
+@RequiredArgsConstructor
 public class EstacionController {
     private final EstacionService estacionService;
 
-    @Autowired
-    public EstacionController(EstacionService estacionService) {
-        this.estacionService = estacionService;
-    }
-
-    @GetMapping("/estaciones")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<EstacionEntity> obtenerEstaciones() {
         return estacionService.obtenerEstaciones();
     }
 
     // TODO: Add guard conditions
-    @PostMapping("/estaciones")
-    public ResponseEntity<String> agregarEstacion(@RequestBody EstacionEntity estacion) {
-        System.out.println("EstacionController.agregarEstacion()");
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    public void agregarEstacion(@RequestBody EstacionEntity estacion) {
         estacionService.agregarEstacion(estacion);
-        return ResponseEntity.ok("Estacion Añadida: " + estacion.toString());
     }
 }

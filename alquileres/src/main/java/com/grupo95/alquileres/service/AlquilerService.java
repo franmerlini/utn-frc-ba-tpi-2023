@@ -17,7 +17,7 @@ public class AlquilerService {
     }
 
     public List<AlquilerEntity> obtenerAlquileres() {
-        return alquilerRepository.findAll();
+        return (List<AlquilerEntity>) alquilerRepository.findAll();
     }
 
     public void agregarAlquiler(AlquilerEntity alquiler) {
