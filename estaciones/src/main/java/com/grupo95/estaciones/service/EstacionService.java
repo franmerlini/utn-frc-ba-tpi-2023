@@ -17,7 +17,7 @@ public class EstacionService {
     }
 
     public List<EstacionEntity> obtenerEstaciones() {
-        return estacionRepository.findAll();
+        return (List<EstacionEntity>) estacionRepository.findAll();
     }
 
     public void agregarEstacion(EstacionEntity estacion) {
