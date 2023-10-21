@@ -22,7 +22,6 @@ public class EstacionController {
 
     @GetMapping("/estaciones")
     public List<EstacionEntity> obtenerEstaciones() {
-        System.out.println("EstacionController.obtenerEstaciones()");
         return estacionService.obtenerEstaciones();
     }
 
