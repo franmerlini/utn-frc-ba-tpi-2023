@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 @Repository
 public interface EstacionRepository extends JpaRepository<EstacionEntity, Integer> {
 
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO ESTACIONES (fecha_hora_creacion, latitud, longitud, nombre) VALUES (:fechaHoraCreacion, :latitud, :longitud, :nombre)", nativeQuery = true)
-    void insertarEstacion(@Param("fechaHoraCreacion") LocalDateTime fechaHoraCreacion, @Param("latitud") Float latitud, @Param("longitud") Float longitud, @Param("nombre") String nombre);
+    @Query(value = "select coalesce(max(ID), 0) from ESTACIONES", nativeQuery = true)
+    int getMaxId();
 }
