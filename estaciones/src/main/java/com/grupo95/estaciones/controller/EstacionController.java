@@ -28,8 +28,6 @@ public class EstacionController {
         return ResponseEntity.ok(response);
     }
 
-    // TODO: Add guard conditions
-
     @Operation(
             summary = "Get Nearest Station by Coordinates",
             description = "Retrieve the closest station based on provided latitude and longitude."
