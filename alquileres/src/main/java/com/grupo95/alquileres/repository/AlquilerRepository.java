@@ -25,4 +25,16 @@ public interface AlquilerRepository extends CrudRepository<AlquilerEntity, Integ
             @Param("monto") float monto,
             @Param("tarifa") int tarifa
     );
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE ALQUILERES SET ESTADO = :estado, FECHA_HORA_DEVOLICION= :fechaHoraDevolucion WHERE ID = :id", nativeQuery = true)
+    void finalizarAlquiler(@Param("id") int id, @Param("estado") int estado, @Param("fechaHoraDevolucion") LocalDateTime fechaHoraDevolucion);
+
+
+    @Query(value = "SELECT * FROM ALQUILERES WHERE ID = :id", nativeQuery = true)
+    AlquilerEntity obtenerDetallesAlquiler(@Param("id") int id);
+
+
+
 }

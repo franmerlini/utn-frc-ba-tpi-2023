@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,4 +31,15 @@ public class AlquilerController {
     public void agregarAlquiler(@RequestBody AlquilerEntity alquiler) {
         alquilerservice.agregarAlquiler(alquiler);
     }
+
+    @PutMapping("/finalizar/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Finalizar el alquiler", description = "Terminar el alquiler en curso."
+    )
+    public void finalizarAlquiler(@PathVariable int id, @RequestParam int estado,
+                                  @RequestParam LocalDateTime fechaHoraDevolucion,
+                                  @RequestParam(required = false, defaultValue = "ARS") String moneda){
+        alquilerservice.finalizarAlquilerConMoneda(id, estado, fechaHoraDevolucion, moneda);
+    }
+
 }
