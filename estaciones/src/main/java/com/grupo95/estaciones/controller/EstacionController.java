@@ -1,11 +1,9 @@
 package com.grupo95.estaciones.controller;
 
-import com.grupo95.estaciones.EstacionesApplication;
 import com.grupo95.estaciones.entity.EstacionEntity;
 import com.grupo95.estaciones.service.EstacionService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
