@@ -2,26 +2,22 @@ package com.grupo95.estaciones.service;
 
 import com.grupo95.estaciones.entity.EstacionEntity;
 import com.grupo95.estaciones.repository.EstacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class EstacionService {
-    private final EstacionRepository estacionRepository;
+    private final EstacionRepository _estacionRepository;
 
-    @Autowired
-    public EstacionService(EstacionRepository estacionRepository) {
-        this.estacionRepository = estacionRepository;
-    }
-
-    public List<EstacionEntity> obtenerEstaciones() {
-        return (List<EstacionEntity>) estacionRepository.findAll();
+    public List<EstacionEntity> obtenerEstaciones(){
+        return _estacionRepository.findAll();
     }
 
     public void agregarEstacion(EstacionEntity estacion) {
         System.out.println(estacion);
-        estacionRepository.insertarEstacion(estacion.getFechaHoraCreacion(), estacion.getLatitud(), estacion.getLongitud(), estacion.getNombre());
+        _estacionRepository.insertarEstacion(estacion.getFechaHoraCreacion(), estacion.getLatitud(), estacion.getLongitud(), estacion.getNombre());
     }
 }
