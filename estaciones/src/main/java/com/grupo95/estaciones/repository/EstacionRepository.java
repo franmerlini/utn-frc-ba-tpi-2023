@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 
 @Repository
-public interface EstacionRepository extends CrudRepository<EstacionEntity, Integer> {
+public interface EstacionRepository extends JpaRepository<EstacionEntity, Integer> {
 
     @Modifying
     @Transactional
