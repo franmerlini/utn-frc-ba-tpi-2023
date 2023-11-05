@@ -26,4 +26,8 @@ public class EstacionEntity {
     @Basic
     @Column(name = "LONGITUD")
     private Float longitud;
+
+    public double getDistance(double latitude, double longitude){
+        return Math.sqrt(Math.pow(latitude - this.getLatitud(), 2) + Math.pow(longitude - this.getLongitud(), 2));
+    }
 }
