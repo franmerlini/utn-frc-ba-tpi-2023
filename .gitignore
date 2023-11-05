@@ -9,6 +9,9 @@ target/
 *.iml
 *.ipr
 
+### DB ###
+bicicletas.db
+
 ### Eclipse ###
 .apt_generated
 .classpath
