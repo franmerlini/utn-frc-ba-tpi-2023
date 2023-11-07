@@ -1,6 +1,7 @@
 package com.grupo95.alquileres.controller;
 
 import com.grupo95.alquileres.entity.AlquilerEntity;
+import com.grupo95.alquileres.entity.request.AlquilerFinalizadoResponse;
 import com.grupo95.alquileres.service.AlquilerService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +33,12 @@ public class AlquilerController {
         alquilerservice.agregarAlquiler(alquiler);
     }
 
-    @PutMapping("/finalizar/{id}")
+    @PutMapping("/finalizar/")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Finalizar el alquiler", description = "Terminar el alquiler en curso."
     )
-    public void finalizarAlquiler(@PathVariable int id, @RequestParam int estado,
-                                  @RequestParam LocalDateTime fechaHoraDevolucion,
-                                  @RequestParam(required = false, defaultValue = "ARS") String moneda){
-        alquilerservice.finalizarAlquilerConMoneda(id, estado, fechaHoraDevolucion, moneda);
+    public void finalizarAlquiler(@RequestBody AlquilerFinalizadoResponse alquilerFinalizado){
+        alquilerservice.finalizarAlquilerConMoneda(alquilerFinalizado.getId(), alquilerFinalizado.getLatitud(), alquilerFinalizado.getLongitud(), alquilerFinalizado.getMoneda());
     }
 
 }
