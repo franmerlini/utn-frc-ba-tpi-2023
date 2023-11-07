@@ -33,8 +33,8 @@ public class SecurityConfig {
   @Bean
   public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder) {
     return routeLocatorBuilder.routes()
-        .route(p -> p.path(pathEstaciones + "/**").uri(uriEstaciones))
-        .route(p -> p.path(pathAlquileres + "/**").uri(uriAlquileres))
+        .route(p -> p.path("/api/estaciones/**").uri(uriEstaciones))
+        .route(p -> p.path("/api/alquileres/**").uri(uriAlquileres))
         .build();
   }
 
@@ -42,8 +42,9 @@ public class SecurityConfig {
   public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity) {
     serverHttpSecurity
         .authorizeExchange(exchange -> exchange
-            .pathMatchers(pathEstaciones + "/**", pathAlquileres + "/**")
-            .hasAnyRole("ADMIN", "CLIENT")
+            .pathMatchers("/api/estaciones/**", "/api/alquileres/**")
+            .hasAnyRole("KEMPES_ADMIN", "KEMPES_ORGANIZADOR")
+
             .anyExchange()
             .authenticated())
         .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
