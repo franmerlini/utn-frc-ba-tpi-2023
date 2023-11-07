@@ -5,8 +5,8 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -16,7 +16,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
 @EnableWebFluxSecurity
-@EnableMethodSecurity
 public class SecurityConfig {
   @Value("${uri_estaciones}")
   private String uriEstaciones;
@@ -33,8 +32,8 @@ public class SecurityConfig {
   @Bean
   public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder) {
     return routeLocatorBuilder.routes()
-        .route(p -> p.path("/api/estaciones/**").uri(uriEstaciones))
-        .route(p -> p.path("/api/alquileres/**").uri(uriAlquileres))
+        .route(p -> p.path(pathEstaciones + "/**").uri(uriEstaciones))
+        .route(p -> p.path(pathAlquileres + "/**").uri(uriAlquileres))
         .build();
   }
 
@@ -42,7 +41,13 @@ public class SecurityConfig {
   public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity) {
     serverHttpSecurity
         .authorizeExchange(exchange -> exchange
-            .pathMatchers("/api/estaciones/**", "/api/alquileres/**")
+            .pathMatchers(HttpMethod.GET, pathAlquileres)
+            .hasRole("KEMPES_ADMIN")
+
+            .pathMatchers(HttpMethod.POST, pathEstaciones)
+            .hasRole("KEMPES_ADMIN")
+
+            .pathMatchers(pathEstaciones + "/**", pathAlquileres + "/**")
             .hasAnyRole("KEMPES_ADMIN", "KEMPES_ORGANIZADOR")
 
             .anyExchange()
@@ -54,18 +59,17 @@ public class SecurityConfig {
 
   @Bean
   public ReactiveJwtAuthenticationConverter jwtAuthenticationConverter() {
-    var jwtAuthenticationConverter = new ReactiveJwtAuthenticationConverter();
-    var grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    ReactiveJwtAuthenticationConverter reactiveJwtAuthenticationConverter =
+        new ReactiveJwtAuthenticationConverter();
+    JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter =
+        new JwtGrantedAuthoritiesConverter();
 
-    // Se especifica el nombre del claim a analizar
     grantedAuthoritiesConverter.setAuthoritiesClaimName("authorities");
-    // Se agrega este prefijo en la conversión por una convención de Spring
     grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
-    // Se asocia el conversor de Authorities al Bean que convierte el token JWT a un objeto Authorization
-    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(
+    reactiveJwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(
         new ReactiveJwtGrantedAuthoritiesConverterAdapter(grantedAuthoritiesConverter));
 
-    return jwtAuthenticationConverter;
+    return reactiveJwtAuthenticationConverter;
   }
 }
