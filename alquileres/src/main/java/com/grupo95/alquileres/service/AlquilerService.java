@@ -4,6 +4,7 @@ import com.grupo95.alquileres.entity.AlquilerEntity;
 import com.grupo95.alquileres.repository.AlquilerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Service
 public class AlquilerService {
     private final AlquilerRepository alquilerRepository;
+    private final String API_URL = "http://34.82.105.125:8080/convertir";
 
     @Autowired
     public AlquilerService(AlquilerRepository alquilerRepository) {
@@ -30,10 +32,12 @@ public class AlquilerService {
     public void finalizarAlquilerConMoneda(int id, int estado, LocalDateTime fechaHoraDevolucion, String moneda){
         AlquilerEntity alquiler = alquilerRepository.findById(id).orElse(null);
         if (alquiler != null){
-            conversorDivisasService conversorDivisasService = new conversorDivisasService();
             float montoPesos = alquiler.getMonto();
-            float montoConvertido = conversorDivisasService.conversor(montoPesos, moneda);
+            RestTemplate restTemplate = new RestTemplate();
+            String request = String.format("{\"moneda_destino\":\"%s\",\"importe\":%f}", moneda, montoPesos);
+            String response = restTemplate.postForObject(API_URL, request, String.class);
 
+            float montoConvertido = Float.parseFloat(response);
             alquilerRepository.finalizarAlquiler(id, estado, fechaHoraDevolucion);
             System.out.println(alquiler);
             System.out.println("Monto en " + moneda + ": "+ montoConvertido);
