@@ -47,4 +47,8 @@ public class EstacionService {
         _estacionRepository.save(entity);
         return entity;
     }
+
+    public EstacionEntity obtenerEstacionPorId(Integer id) {
+        return _estacionRepository.findById(id).orElseThrow();
+    }
 }

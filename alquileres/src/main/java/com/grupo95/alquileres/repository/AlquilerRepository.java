@@ -13,17 +13,17 @@ import java.time.LocalDateTime;
 @Repository
 public interface AlquilerRepository extends CrudRepository<AlquilerEntity, Integer> {
 
+    @Query(value = "SELECT MAX(a.id) FROM ALQUILERES a", nativeQuery = true)
+    int findLastInsertedId();
+
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO ALQUILERES (ESTADO, ESTACION_RETIRO, ESTACION_DEVOLUCION, FECHA_HORA_RETIRO, FECHA_HORA_DEVOLUCION, MONTO, ID_TARIFA) VALUES (:estado, :estacionRetiro, :estacionDevolucion, :fechaHoraRetiro, :fechaHoraDevolucion, :monto, :tarifa)", nativeQuery = true)
+    @Query(value = "INSERT INTO ALQUILERES (ID_CLIENTE,ESTADO, ESTACION_RETIRO, FECHA_HORA_RETIRO) VALUES (:idCliente,:estado, :estacionRetiro, :fechaHoraRetiro)", nativeQuery = true)
     void insertarAlquiler(
+            @Param("idCliente") int idCliente,
             @Param("estado") int estado,
             @Param("estacionRetiro") int estacionRetiro,
-            @Param("estacionDevolucion") int estacionDevolucion,
-            @Param("fechaHoraRetiro") LocalDateTime fechaHoraRetiro,
-            @Param("fechaHoraDevolucion") LocalDateTime fechaHoraDevolucion,
-            @Param("monto") float monto,
-            @Param("tarifa") int tarifa
+            @Param("fechaHoraRetiro") LocalDateTime fechaHoraRetiro
     );
 
     @Modifying
