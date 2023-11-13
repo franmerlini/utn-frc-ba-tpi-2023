@@ -6,8 +6,8 @@ import lombok.Getter;
 @Data
 @Getter
 public class ConversorDivisaResponse {
-    final private String moneda;
-    final private Double monto;
+     private String moneda;
+     private double importe;
 
 
 }
