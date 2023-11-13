@@ -11,6 +11,7 @@ import com.grupo95.alquileres.repository.AlquilerRepository;
 import com.grupo95.alquileres.repository.TarifaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -35,7 +36,6 @@ public class AlquilerService {
 
         alquilerRepository.insertarAlquiler(1,1, estacionRetiro, now);
     }
-
 
     public FinalizarAlquilerDTO finalizarAlquilerConMoneda(int id, double latitud, double longitud, String moneda) throws Exception {
 
@@ -96,16 +96,6 @@ public class AlquilerService {
         alquilerRepository.save(alquiler);
 
         return new FinalizarAlquilerDTO(estacionPartida.getNombre(), estacionDevolucion.getNombre(), duracion.toMinutes(), montoTotal, distancia, moneda);
-
-
-        /*conversorDivisasService conversorDivisasService = new conversorDivisasService();
-            float montoPesos = alquiler.getMonto();
-            float montoConvertido = conversorDivisasService.conversor(montoPesos, moneda);
-
-            alquilerRepository.finalizarAlquiler(id, estado, fechaHoraDevolucion);
-            System.out.println(alquiler);
-            System.out.println("Monto en " + moneda + ": "+ montoConvertido);
-*/
     }
 
 }

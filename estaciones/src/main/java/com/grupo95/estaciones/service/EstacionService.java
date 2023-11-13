@@ -1,12 +1,13 @@
 package com.grupo95.estaciones.service;
 
+import com.grupo95.estaciones.entity.DTO.StationDTO;
 import com.grupo95.estaciones.entity.EstacionEntity;
 import com.grupo95.estaciones.repository.EstacionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +36,16 @@ public class EstacionService {
         }
         return closestStation;
     }
-    public void agregarEstacion(EstacionEntity estacion) {
-        System.out.println(estacion);
-        _estacionRepository.insertarEstacion(estacion.getFechaHoraCreacion(), estacion.getLatitud(), estacion.getLongitud(), estacion.getNombre());
+    public EstacionEntity saveStation(StationDTO station) {
+        int nextId = _estacionRepository.getMaxId() + 1;
+        EstacionEntity entity = new EstacionEntity();
+        entity.setId(nextId);
+        entity.setNombre(station.getName());
+        entity.setLatitud(station.getLatitude());
+        entity.setLongitud(station.getLongitude());
+        entity.setFechaHoraCreacion(LocalDateTime.now());
+        _estacionRepository.save(entity);
+        return entity;
     }
 
     public EstacionEntity obtenerEstacionPorId(Integer id) {
