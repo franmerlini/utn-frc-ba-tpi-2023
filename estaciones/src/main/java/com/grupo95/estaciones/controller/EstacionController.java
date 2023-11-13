@@ -1,8 +1,10 @@
 package com.grupo95.estaciones.controller;
 
+import com.grupo95.estaciones.entity.DTO.StationDTO;
 import com.grupo95.estaciones.entity.EstacionEntity;
 import com.grupo95.estaciones.service.EstacionService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,9 +48,19 @@ public class EstacionController {
         }
         return ResponseEntity.ok(response);
     }
+    @Operation(
+            summary = "Create or Update Station Information",
+            description = "Save station details. This endpoint allows for creating a new station or updating existing station information."
+    )
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public void agregarEstacion(@RequestBody EstacionEntity estacion) {
-        _estacionService.agregarEstacion(estacion);
+    //TODO Fix DTO validation
+    public ResponseEntity<EstacionEntity> saveStation(@Valid @RequestBody StationDTO station) {
+        EstacionEntity response;
+        try{
+            response = _estacionService.saveStation(station);
+        } catch (Exception ex){
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
