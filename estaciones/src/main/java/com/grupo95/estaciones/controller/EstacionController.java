@@ -32,8 +32,8 @@ public class EstacionController {
             summary = "Get Nearest Station by Coordinates",
             description = "Retrieve the closest station based on provided latitude and longitude."
     )
-    @GetMapping("/{lat}&{lng}")
-    public ResponseEntity<EstacionEntity> GetStationByCoordinates(@PathVariable double lat, @PathVariable double lng){
+    @GetMapping("/{lat}/{lng}")
+    public ResponseEntity<EstacionEntity> GetStationByCoordinates(@PathVariable Double lat, @PathVariable Double lng){
         EstacionEntity response;
         try {
             response = _estacionService.getStationByCoordinates(lat, lng);
@@ -50,5 +50,16 @@ public class EstacionController {
     @ResponseStatus(HttpStatus.CREATED)
     public void agregarEstacion(@RequestBody EstacionEntity estacion) {
         _estacionService.agregarEstacion(estacion);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EstacionEntity> obtenerEstacionPorId(@PathVariable Integer id) {
+        EstacionEntity response;
+        try{
+            response = _estacionService.obtenerEstacionPorId(id);
+        }catch (Exception ex){
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok(response);
     }
 }

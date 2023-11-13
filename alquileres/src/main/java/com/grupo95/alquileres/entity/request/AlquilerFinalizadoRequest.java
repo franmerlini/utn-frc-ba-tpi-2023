@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Data
 @Getter
-public class AlquilerFinalizadoResponse {
+public class AlquilerFinalizadoRequest {
     private int id;
     private double latitud;
     private double longitud;

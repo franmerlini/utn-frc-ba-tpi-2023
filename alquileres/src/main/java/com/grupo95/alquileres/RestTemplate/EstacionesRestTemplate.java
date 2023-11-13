@@ -20,7 +20,6 @@ public class EstacionesRestTemplate {
             ResponseEntity<EstacionEntity> res = template.getForEntity(
                     "http://localhost:8081/api/estaciones/{id}", EstacionEntity.class, idEstacion
             );
-
             // Se comprueba si el código de repuesta es de la familia 200
             if (res.getStatusCode().is2xxSuccessful()) {
                 return res.getBody();
@@ -33,15 +32,14 @@ public class EstacionesRestTemplate {
         return null;
     }
 
-    public EstacionEntity getEstacionByCoordenadas(double latitud, double longitud) {
+    public EstacionEntity getEstacionByCoordenadas(Double latitud, Double longitud) {
         // Creación de una instancia de RestTemplate
+
         try {
             // Creación de la instancia de RequestTemplate
             RestTemplate template = new RestTemplate();
-            // Se realiza una petición a http://localhost:8082/api/personas/{id}, indicando que id vale 1 y que la
-            // respuesta de la petición tendrá en su cuerpo a un objeto del tipo Persona.
             ResponseEntity<EstacionEntity> res = template.getForEntity(
-                    "http://localhost:8081/api/estaciones/?{latitud}&{longitud}", EstacionEntity.class, latitud,longitud
+                    "http://localhost:8081/api/estaciones/{latitud}/{longitud}", EstacionEntity.class, latitud,longitud
             );
 
             // Se comprueba si el código de repuesta es de la familia 200
@@ -52,6 +50,7 @@ public class EstacionesRestTemplate {
 
         } catch (HttpClientErrorException ex) {
             // La repuesta no es exitosa
+            System.out.println(ex.getMessage());
         }
         return null;
     }

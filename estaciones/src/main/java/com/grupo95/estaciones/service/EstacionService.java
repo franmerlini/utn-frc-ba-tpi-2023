@@ -39,4 +39,8 @@ public class EstacionService {
         System.out.println(estacion);
         _estacionRepository.insertarEstacion(estacion.getFechaHoraCreacion(), estacion.getLatitud(), estacion.getLongitud(), estacion.getNombre());
     }
+
+    public EstacionEntity obtenerEstacionPorId(Integer id) {
+        return _estacionRepository.findById(id).orElseThrow();
+    }
 }

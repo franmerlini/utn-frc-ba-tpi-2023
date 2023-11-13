@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class EstacionEntity {
+    private int id;
     private String nombre;
     private LocalDateTime fechaHoraCreacion;
     private double latitud;

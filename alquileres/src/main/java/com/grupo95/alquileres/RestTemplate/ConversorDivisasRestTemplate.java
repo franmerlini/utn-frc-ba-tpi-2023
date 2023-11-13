@@ -1,21 +1,21 @@
 package com.grupo95.alquileres.RestTemplate;
 
 import com.grupo95.alquileres.entity.EstacionEntity;
+import com.grupo95.alquileres.entity.response.ConversorDivisaResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class ConversorDivisasRestTemplate {
-    public Double getMonedaConvertida(double monto, String moneda) {
+    public ConversorDivisaResponse getMonedaConvertida(double montoPesos, String moneda) {
         // Creación de una instancia de RestTemplate
         try {
             // Creación de la instancia de RequestTemplate
             RestTemplate template = new RestTemplate();
-            // Se realiza una petición a http://localhost:8082/api/personas/{id}, indicando que id vale 1 y que la
-            // respuesta de la petición tendrá en su cuerpo a un objeto del tipo Persona.
-            ResponseEntity<Double> res = template.getForEntity(
-                    "http://localhost:8081/api/estaciones/{}", Double.class, monto, moneda
-            );
+
+            String request = String.format("{\"moneda_destino\":\"%s\",\"importe\":%f}", moneda, montoPesos);
+            ResponseEntity<ConversorDivisaResponse> res = template.postForEntity("http://34.82.105.125:8080/convertir", request, ConversorDivisaResponse.class);
+
 
             // Se comprueba si el código de repuesta es de la familia 200
             if (res.getStatusCode().is2xxSuccessful()) {
