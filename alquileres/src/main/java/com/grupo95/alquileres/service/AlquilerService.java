@@ -11,7 +11,6 @@ import com.grupo95.alquileres.repository.AlquilerRepository;
 import com.grupo95.alquileres.repository.TarifaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -77,21 +76,19 @@ public class AlquilerService {
         } else {
             montoTotal += duracion.toMinutes()*tarifa.getMontoMinutoFraccion();
         }
-
+        alquiler.setMonto(montoTotal);
         if(!Objects.equals(moneda, "ARS")) {
             ConversorDivisasRestTemplate conversorDivisasRestTemplate = new ConversorDivisasRestTemplate();
 
             ConversorDivisaResponse resp = conversorDivisasRestTemplate.getMonedaConvertida(montoTotal, moneda);
             moneda = resp.getMoneda();
-            montoTotal = resp.getMonto();
+            montoTotal = resp.getImporte();
         }
 
-        alquiler.setMonto(montoTotal);
         alquiler.setTarifa(tarifa.getId());
         alquiler.setEstacionDevolucion(estacionDevolucion.getId());
         alquiler.setFechaHoraDevolucion(fechaDevolucion);
         alquiler.setEstado(2);
-
 
         alquilerRepository.save(alquiler);
 
