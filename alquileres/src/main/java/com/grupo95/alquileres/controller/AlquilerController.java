@@ -20,6 +20,7 @@ public class AlquilerController {
     private final AlquilerService alquilerService;
 
     @GetMapping()
+    @Operation(summary = "Obtiene todos los alquileres")
     public ResponseEntity<List<AlquilerEntity>> obtenerAlquileres() {
         List<AlquilerEntity> response;
         try {
@@ -60,11 +61,11 @@ public class AlquilerController {
             response = alquilerService.finalizarAlquilerConMoneda(alquilerFinalizado.getId(), alquilerFinalizado.getLatitud(), alquilerFinalizado.getLongitud(), alquilerFinalizado.getMoneda());
             return ResponseEntity.ok(response);
         } catch (NoSuchElementException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("null");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Parámetros de solicitud no válidos.");
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se produjo un error interno al finalizar el alquiler.");
         }
     }
 }

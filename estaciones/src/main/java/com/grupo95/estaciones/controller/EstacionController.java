@@ -39,16 +39,16 @@ public class EstacionController {
             description = "Muestra la estacion mas cercana basandose en la latitud y longitud dada."
     )
     @GetMapping("/{lat}/{lng}")
-    public ResponseEntity<EstacionEntity> GetStationByCoordinates(@PathVariable Double lat, @PathVariable Double lng){
+    public ResponseEntity<?> GetStationByCoordinates(@PathVariable Double lat, @PathVariable Double lng){
         EstacionEntity response;
         try {
             response = _estacionService.getStationByCoordinates(lat, lng);
         } catch (NoSuchElementException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Las coordenadas proporcionadas no son válidas.");
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se produjo un error interno en el servicio.");
         }
         return ResponseEntity.ok(response);
     }
