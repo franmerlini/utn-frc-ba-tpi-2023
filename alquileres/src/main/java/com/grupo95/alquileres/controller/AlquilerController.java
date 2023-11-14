@@ -53,7 +53,15 @@ public class AlquilerController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(
             summary = "Finalizar el alquiler",
-            description = "Terminar el alquiler en curso."
+            description = "Terminar el alquiler en curso.\n" +
+                    "Monedas Soportadas: [\n" +
+                    "\t EUR\n," +
+                    "\t CLP\n," +
+                    "\t BRL\n," +
+                    "\t COP\n," +
+                    "\t PEN\n," +
+                    "\t GBP\n," +
+                    "\t USD.]"
     )
     public ResponseEntity<?> finalizarAlquiler(@RequestBody AlquilerFinalizadoRequest alquilerFinalizado) {
         FinalizarAlquilerDTO response;

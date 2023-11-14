@@ -38,8 +38,9 @@ public class AlquilerService {
 
     public FinalizarAlquilerDTO finalizarAlquilerConMoneda(int id, double latitud, double longitud, String moneda) throws Exception {
 
-        AlquilerEntity alquiler = alquilerRepository.findById(id).orElseThrow();
-        if(alquiler == null) throw new Exception("NO HAY ALQUILER");
+        AlquilerEntity alquiler = alquilerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Alquiler inexistente"));
+        if (alquiler.estaFinalizado()) throw new IllegalArgumentException("Alquiler ya finalizado.");
+
         LocalDateTime fechaDevolucion = LocalDateTime.now();
         TarifaEntity tarifa = tarifaRepository.findTarifaByDefinicionCAndDiaMesAndAnio(
                 fechaDevolucion.getDayOfMonth(), fechaDevolucion.getMonthValue(), fechaDevolucion.getYear());
@@ -81,6 +82,7 @@ public class AlquilerService {
             ConversorDivisasRestTemplate conversorDivisasRestTemplate = new ConversorDivisasRestTemplate();
 
             ConversorDivisaResponse resp = conversorDivisasRestTemplate.getMonedaConvertida(montoTotal, moneda);
+            if (resp == null) throw new IllegalArgumentException("Moneda no soportada");
             moneda = resp.getMoneda();
             montoTotal = resp.getImporte();
         }

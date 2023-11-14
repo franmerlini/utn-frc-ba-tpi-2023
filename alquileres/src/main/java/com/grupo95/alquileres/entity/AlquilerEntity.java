@@ -39,5 +39,7 @@ public class AlquilerEntity {
     @Column(name = "ID")
     private Integer id;
 
-
+    public boolean estaFinalizado(){
+        return estado == 2;
+    }
 }
