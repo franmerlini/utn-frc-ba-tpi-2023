@@ -42,13 +42,19 @@ public class SecurityConfig {
     serverHttpSecurity
         .authorizeExchange(exchange -> exchange
             .pathMatchers(HttpMethod.GET, pathAlquileres)
-            .hasRole("KEMPES_ADMIN")
-
+            .hasRole("ADMINISTRADOR")
             .pathMatchers(HttpMethod.POST, pathEstaciones)
-            .hasRole("KEMPES_ADMIN")
+            .hasRole("ADMINISTRADOR")
+
+            .pathMatchers(HttpMethod.GET, pathEstaciones)
+            .hasRole("CLIENTE")
+            .pathMatchers(HttpMethod.POST, pathAlquileres)
+            .hasRole("CLIENTE")
+            .pathMatchers(HttpMethod.PUT, pathAlquileres + "/finalizar")
+            .hasRole("CLIENTE")
 
             .pathMatchers(pathEstaciones + "/**", pathAlquileres + "/**")
-            .hasAnyRole("KEMPES_ADMIN", "KEMPES_ORGANIZADOR")
+            .hasAnyRole("ADMINISTRADOR", "CLIENTE")
 
             .anyExchange()
             .authenticated())
