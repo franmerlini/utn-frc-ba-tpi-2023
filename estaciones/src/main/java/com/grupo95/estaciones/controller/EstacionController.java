@@ -20,19 +20,23 @@ public class EstacionController {
     private final EstacionService _estacionService;
 
     @GetMapping()
+    @Operation(
+            summary = "Obtiene todas las estaciones",
+            description = "Muestra todas las estaciones que estan cargadas en la base de datos"
+    )
     public ResponseEntity<List<EstacionEntity>> obtenerEstaciones() {
         List<EstacionEntity> response;
         try{
             response = _estacionService.obtenerEstaciones();
         }catch (Exception ex){
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         return ResponseEntity.ok(response);
     }
 
     @Operation(
-            summary = "Get Nearest Station by Coordinates",
-            description = "Retrieve the closest station based on provided latitude and longitude."
+            summary = "Consigue la estacion mas cercana por Cordenadas",
+            description = "Muestra la estacion mas cercana basandose en la latitud y longitud dada."
     )
     @GetMapping("/{lat}/{lng}")
     public ResponseEntity<EstacionEntity> GetStationByCoordinates(@PathVariable Double lat, @PathVariable Double lng){
@@ -40,17 +44,17 @@ public class EstacionController {
         try {
             response = _estacionService.getStationByCoordinates(lat, lng);
         } catch (NoSuchElementException ex) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (Exception ex) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         return ResponseEntity.ok(response);
     }
     @Operation(
-            summary = "Create or Update Station Information",
-            description = "Save station details. This endpoint allows for creating a new station or updating existing station information."
+            summary = "Crea o actualiza una estación",
+            description = "Guarda los detalles de la estación."
     )
     @PostMapping()
     //TODO Fix DTO validation
@@ -59,18 +63,24 @@ public class EstacionController {
         try{
             response = _estacionService.saveStation(station);
         } catch (Exception ex){
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Obtiene una estación por una ID",
+            description = "Usando una ID busca una estacion en la base de datos"
+    )
     public ResponseEntity<EstacionEntity> obtenerEstacionPorId(@PathVariable Integer id) {
         EstacionEntity response;
         try{
             response = _estacionService.obtenerEstacionPorId(id);
-        }catch (Exception ex){
-            return ResponseEntity.internalServerError().build();
+        }catch (NoSuchElementException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         return ResponseEntity.ok(response);
     }

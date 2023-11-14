@@ -17,41 +17,60 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/alquileres")
 @RequiredArgsConstructor
 public class AlquilerController {
-    private final AlquilerService alquilerservice;
+    private final AlquilerService alquilerService;
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public List<AlquilerEntity> obtenerAlquileres() {
-        return alquilerservice.obtenerAlquileres();
+    public ResponseEntity<List<AlquilerEntity>> obtenerAlquileres() {
+        List<AlquilerEntity> response;
+        try {
+            response = alquilerService.obtenerAlquileres();
+            return ResponseEntity.ok(response);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(
-            summary = "LA DE TU MAMA",
-            description = "LA DE TU ABUELA"
+            summary = "Agregar Alquiler",
+            description = "Agregar un nuevo alquiler con la estación de retiro especificada."
     )
-    public void agregarAlquiler(@RequestParam int estacionRetiro) {
-        alquilerservice.agregarAlquiler(estacionRetiro);
+    public ResponseEntity<String> agregarAlquiler(@RequestParam int estacionRetiro) {
+        try {
+            alquilerService.agregarAlquiler(estacionRetiro);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Alquiler agregado exitosamente.");
+        } catch (NoSuchElementException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La estación de retiro especificada no existe.");
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Parámetros de solicitud no válidos.");
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se produjo un error interno al agregar el alquiler.");
+        }
     }
 
     @PutMapping("/finalizar")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Finalizar el alquiler", description = "Terminar el alquiler en curso."
+    @Operation(
+            summary = "Finalizar el alquiler",
+            description = "Terminar el alquiler en curso."
     )
-    public ResponseEntity<FinalizarAlquilerDTO> finalizarAlquiler(@RequestBody AlquilerFinalizadoRequest alquilerFinalizado) throws Exception {
+    public ResponseEntity<?> finalizarAlquiler(@RequestBody AlquilerFinalizadoRequest alquilerFinalizado) {
         FinalizarAlquilerDTO response;
         try {
-            response = alquilerservice.finalizarAlquilerConMoneda(alquilerFinalizado.getId(), alquilerFinalizado.getLatitud(), alquilerFinalizado.getLongitud(), alquilerFinalizado.getMoneda());
+            response = alquilerService.finalizarAlquilerConMoneda(alquilerFinalizado.getId(), alquilerFinalizado.getLatitud(), alquilerFinalizado.getLongitud(), alquilerFinalizado.getMoneda());
+            return ResponseEntity.ok(response);
         } catch (NoSuchElementException ex) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("null");
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (Exception ex) {
-            System.out.println(ex);
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return ResponseEntity.ok(response);
     }
-
 }
+
+
+
+
+
+
