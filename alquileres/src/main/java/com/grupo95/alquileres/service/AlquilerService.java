@@ -9,6 +9,7 @@ import com.grupo95.alquileres.entity.response.ConversorDivisaResponse;
 import com.grupo95.alquileres.entity.response.FinalizarAlquilerDTO;
 import com.grupo95.alquileres.repository.AlquilerRepository;
 import com.grupo95.alquileres.repository.TarifaRepository;
+import com.grupo95.estaciones.repository.EstacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -26,14 +28,19 @@ public class AlquilerService {
     private TarifaRepository tarifaRepository;
 
 
-    public List<AlquilerEntity> obtenerAlquileres() {
-        return (List<AlquilerEntity>) alquilerRepository.findAll();
+    public List<AlquilerEntity> obtenerAlquileres(String cliente, Integer estado, Integer tarifa) {
+        if (cliente == null && estado == null && tarifa == null) return (List<AlquilerEntity>) alquilerRepository.findAll();
+        else return alquilerRepository.findAlquilerEntitiesByIdClienteOrTarifaOrEstado(cliente, tarifa, estado);
     }
 
-    public void agregarAlquiler(int estacionRetiro) {
+    public void agregarAlquiler(String cliente, Integer estacionRetiro) {
         LocalDateTime now = LocalDateTime.now();
+        EstacionesRestTemplate estacionesRestTemplate = new EstacionesRestTemplate();
+        EstacionEntity estacion = estacionesRestTemplate.getEstacionById(estacionRetiro);
+        if (estacion == null) throw new NoSuchElementException("Estacion no existente");
+        if (!alquilerRepository.findAlquilerEntitiesByIdClienteAndEstado(cliente, 1).isEmpty()) throw new IllegalArgumentException("Cliente con alquileres sin finalizar");
 
-        alquilerRepository.insertarAlquiler(1,1, estacionRetiro, now);
+        alquilerRepository.insertarAlquiler(cliente,1, estacionRetiro, now);
     }
 
     public FinalizarAlquilerDTO finalizarAlquilerConMoneda(int id, double latitud, double longitud, String moneda) throws Exception {
@@ -78,6 +85,7 @@ public class AlquilerService {
             montoTotal += duracion.toMinutes()*tarifa.getMontoMinutoFraccion();
         }
         alquiler.setMonto(montoTotal);
+        if (moneda == null) moneda = "ARS";
         if(!Objects.equals(moneda, "ARS")) {
             ConversorDivisasRestTemplate conversorDivisasRestTemplate = new ConversorDivisasRestTemplate();
 

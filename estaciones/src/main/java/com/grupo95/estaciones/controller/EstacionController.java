@@ -38,8 +38,8 @@ public class EstacionController {
             summary = "Consigue la estacion mas cercana por Cordenadas",
             description = "Muestra la estacion mas cercana basandose en la latitud y longitud dada."
     )
-    @GetMapping("/{lat}/{lng}")
-    public ResponseEntity<?> GetStationByCoordinates(@PathVariable Double lat, @PathVariable Double lng){
+    @GetMapping("/cercano")
+    public ResponseEntity<?> GetStationByCoordinates(@RequestParam(name = "lat") Double lat, @RequestParam(name = "lng") Double lng){
         EstacionEntity response;
         try {
             response = _estacionService.getStationByCoordinates(lat, lng);

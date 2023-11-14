@@ -39,7 +39,7 @@ public class EstacionesRestTemplate {
             // Creación de la instancia de RequestTemplate
             RestTemplate template = new RestTemplate();
             ResponseEntity<EstacionEntity> res = template.getForEntity(
-                    "http://localhost:8081/api/estaciones/{latitud}/{longitud}", EstacionEntity.class, latitud,longitud
+                    "http://localhost:8081/api/estaciones/cercano?lat={latitud}&lng={longitud}", EstacionEntity.class, latitud,longitud
             );
 
             // Se comprueba si el código de repuesta es de la familia 200

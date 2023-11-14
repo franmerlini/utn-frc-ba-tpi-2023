@@ -17,6 +17,9 @@ public class AlquilerEntity {
     @Column(name = "ESTADO")
     Integer estado;
     @Basic
+    @Column(name = "ID_CLIENTE")
+    String idCliente;
+    @Basic
     @Column(name = "ESTACION_RETIRO")
     Integer estacionRetiro;
     @Basic
